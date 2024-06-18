@@ -27,7 +27,7 @@ final class UserActivityShortcutsManager {
             
             switch self {
             case .fakeCall:
-                return "레드뷰 실행"
+                return "가짜전화 실행"
             case .blueview:
                 return "블루뷰 실행"
             }
@@ -37,7 +37,7 @@ final class UserActivityShortcutsManager {
             
             switch self {
             case .fakeCall:
-                return "레드뷰 보여줘"
+                return "전화해줘"
             case .blueview:
                 return "블루뷰 보여줘"
             }

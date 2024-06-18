@@ -6,17 +6,29 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct kkusuApp: App {
-    
+    var modelContainer : ModelContainer = {
+        let schema = Schema([FakeCallSetting.self])
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        
+        do {
+            return try ModelContainer(for: schema, configurations: modelConfiguration)
+        } catch {
+            fatalError("Could not create ModelContainer \(error)")
+        }
+    }()
+
     init() {
         UserActivityShortcutsManager.setup()
     }
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+                ContentView()
+                    .modelContainer(modelContainer)
         }
     }
 }

@@ -6,34 +6,29 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @Environment(\.modelContext) var modelContext
+    @Query var fakeCallSet: [FakeCallSetting]
     private var callProviderDelegate = FakeCallProviderDelegate()
-    @State var showRedView: Bool = false
 
-    private func triggerFakeCall() {
-        let uuid = UUID()
-        let handle = "엄마" // 가짜 전화 번호
-        callProviderDelegate.reportIncomingCall(uuid: uuid, handle: handle)
-    }
     var body: some View {
-        VStack {
-            Button(action: {
-                showRedView.toggle()
-            }, label: {
-                Label("Show a RedView", systemImage: "eye.circle.fill")
-            })
-            .foregroundColor(.red)
+        if fakeCallSet.isEmpty{
+            MainView()
+        } else {
+            ActivatedView()
+                .onContinueUserActivity(UserActivityShortcutsManager.Shortcut.fakeCall.type, perform: { userActivity in
+                    triggerFakeCall(callProviderDelegate: callProviderDelegate, caller: fakeCallSet.first?.caller ?? "엄마")
+                })
         }
-        .padding()
-        .sheet(isPresented: $showRedView, content: {
-            RedView()
-        })
-        .onContinueUserActivity(UserActivityShortcutsManager.Shortcut.fakeCall.type, perform: { userActivity in
-            showRedView.toggle()
-            triggerFakeCall()
-        })
     }
+}
+
+func triggerFakeCall(callProviderDelegate : FakeCallProviderDelegate, caller: String) {
+    let uuid = UUID()
+    let handle = caller
+    callProviderDelegate.reportIncomingCall(uuid: uuid, handle: handle)
 }
 
 struct ContentView_Previews: PreviewProvider {

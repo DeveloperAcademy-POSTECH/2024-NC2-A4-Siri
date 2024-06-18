@@ -105,6 +105,9 @@ final class FakeCallProviderDelegate: NSObject, CXProviderDelegate {
         let audioURL = URL(fileURLWithPath: audioFilePath)
         
         do {
+            try AVAudioSession.sharedInstance().setCategory(.playback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
             audioPlayer = try AVAudioPlayer(contentsOf: audioURL)
             audioPlayer?.play()
         } catch {
