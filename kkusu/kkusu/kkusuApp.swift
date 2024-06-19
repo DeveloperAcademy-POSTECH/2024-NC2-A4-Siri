@@ -20,10 +20,6 @@ struct kkusuApp: App {
             fatalError("Could not create ModelContainer \(error)")
         }
     }()
-
-    init() {
-        UserActivityShortcutsManager.setup()
-    }
     
     var body: some Scene {
         WindowGroup {
@@ -32,3 +28,5 @@ struct kkusuApp: App {
         }
     }
 }
+
+

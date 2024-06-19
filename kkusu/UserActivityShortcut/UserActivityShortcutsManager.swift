@@ -11,15 +11,12 @@ final class UserActivityShortcutsManager {
         
     public enum Shortcut: CaseIterable {
         case fakeCall
-        case blueview
         
         var type: String {
             
             switch self {
             case .fakeCall:
                 return "com.kkusu.shortcuts.FakeCall"
-            case .blueview:
-                return "com.kkusu.shortcuts.blueview"
             }
         }
         
@@ -28,8 +25,6 @@ final class UserActivityShortcutsManager {
             switch self {
             case .fakeCall:
                 return "가짜전화 실행"
-            case .blueview:
-                return "블루뷰 실행"
             }
         }
         
@@ -38,8 +33,6 @@ final class UserActivityShortcutsManager {
             switch self {
             case .fakeCall:
                 return "전화해줘"
-            case .blueview:
-                return "블루뷰 보여줘"
             }
         }
         
@@ -48,7 +41,9 @@ final class UserActivityShortcutsManager {
             let userActivity = NSUserActivity(activityType: self.type)
             userActivity.title = self.title
             userActivity.suggestedInvocationPhrase = self.invocationPhrase
-            
+            userActivity.isEligibleForSearch = true
+            userActivity.isEligibleForPrediction = true
+            userActivity.persistentIdentifier = NSUserActivityPersistentIdentifier(self.type)
             return userActivity
         }
         
@@ -58,9 +53,7 @@ final class UserActivityShortcutsManager {
     }
     
     static func setup() {
-        
         var shortcuts: [INShortcut] = []
-        
         for shortcut in Shortcut.allCases {
             shortcuts.append(shortcut.makeShortcut())
         }
@@ -68,5 +61,26 @@ final class UserActivityShortcutsManager {
         INVoiceShortcutCenter.shared.setShortcutSuggestions(shortcuts)
         
         print("complete setup INVoiceShortcutCenter")
+    }
+    
+    static func getExistingVoiceShortcut(for type: String, completion: @escaping (INShortcut?) -> Void) {
+        INVoiceShortcutCenter.shared.getAllVoiceShortcuts { (shortcuts, error) in
+            if let error = error {
+                print("Error fetching voice shortcuts: \(error)")
+                completion(nil)
+            } else {
+                let matchingShortcuts = shortcuts?.filter { $0.shortcut.userActivity?.activityType == type } ?? []
+                print("Number of shortcuts with type \(type): \(matchingShortcuts.count)")
+                
+                if let firstMatchingShortcut = matchingShortcuts.first {
+                    print(firstMatchingShortcut.invocationPhrase)
+                    let newSortcut = INShortcut(userActivity: firstMatchingShortcut.shortcut.userActivity!)
+                    newSortcut.userActivity?.suggestedInvocationPhrase = firstMatchingShortcut.invocationPhrase
+                    completion(newSortcut)
+                } else {
+                    completion(nil)
+                }
+            }
+        }
     }
 }

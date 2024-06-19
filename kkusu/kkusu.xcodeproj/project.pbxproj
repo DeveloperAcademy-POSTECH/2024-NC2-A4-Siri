@@ -28,11 +28,13 @@
 		1EBBE4902C212176008E02BD /* music.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1EBBE48F2C212176008E02BD /* music.m4a */; };
 		1EBBE4932C212B7D008E02BD /* FakeCallSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBBE4922C212B7D008E02BD /* FakeCallSetting.swift */; };
 		1EBBE4982C215828008E02BD /* SetCallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBBE4972C215828008E02BD /* SetCallButton.swift */; };
-		1EBBE49A2C216F81008E02BD /* mainBackground.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1EBBE4992C216F81008E02BD /* mainBackground.gif */; };
-		1EBBE49C2C216F88008E02BD /* checkBackground.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1EBBE49B2C216F88008E02BD /* checkBackground.gif */; };
 		1EBBE49F2C216FBF008E02BD /* GifImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBBE49E2C216FBF008E02BD /* GifImage.swift */; };
 		1EBBE4A12C21B229008E02BD /* ActivatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBBE4A02C21B229008E02BD /* ActivatedView.swift */; };
 		1EBBE4A32C21B813008E02BD /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBBE4A22C21B813008E02BD /* MainView.swift */; };
+		1EBBE4A52C22B7FB008E02BD /* checkBackground.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1EBBE4A42C22B7FB008E02BD /* checkBackground.gif */; };
+		1EBBE4A72C22B816008E02BD /* mainBackground.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1EBBE4A62C22B816008E02BD /* mainBackground.gif */; };
+		1EBBE4A92C22BAF0008E02BD /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EBBE4A82C22BAF0008E02BD /* CallKit.framework */; };
+		1EBBE4AB2C22FF8D008E02BD /* momSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1EBBE4AA2C22FEAF008E02BD /* momSound.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,11 +94,13 @@
 		1EBBE48F2C212176008E02BD /* music.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = music.m4a; sourceTree = "<group>"; };
 		1EBBE4922C212B7D008E02BD /* FakeCallSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeCallSetting.swift; sourceTree = "<group>"; };
 		1EBBE4972C215828008E02BD /* SetCallButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCallButton.swift; sourceTree = "<group>"; };
-		1EBBE4992C216F81008E02BD /* mainBackground.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = mainBackground.gif; sourceTree = "<group>"; };
-		1EBBE49B2C216F88008E02BD /* checkBackground.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = checkBackground.gif; sourceTree = "<group>"; };
 		1EBBE49E2C216FBF008E02BD /* GifImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifImage.swift; sourceTree = "<group>"; };
 		1EBBE4A02C21B229008E02BD /* ActivatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivatedView.swift; sourceTree = "<group>"; };
 		1EBBE4A22C21B813008E02BD /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		1EBBE4A42C22B7FB008E02BD /* checkBackground.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = checkBackground.gif; sourceTree = "<group>"; };
+		1EBBE4A62C22B816008E02BD /* mainBackground.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = mainBackground.gif; sourceTree = "<group>"; };
+		1EBBE4A82C22BAF0008E02BD /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
+		1EBBE4AA2C22FEAF008E02BD /* momSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = momSound.m4a; path = ../../../../Downloads/momSound.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EBBE4A92C22BAF0008E02BD /* CallKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,7 +134,6 @@
 		1EBBE43B2C211A1E008E02BD = {
 			isa = PBXGroup;
 			children = (
-				1EBBE4912C212B3C008E02BD /* Model */,
 				1EBBE48E2C212162008E02BD /* Resource */,
 				1EBBE48B2C21212A008E02BD /* FakeCall */,
 				1EBBE4892C211D50008E02BD /* SiriButton */,
@@ -158,6 +162,7 @@
 			children = (
 				1EBBE48A2C211E04008E02BD /* Info.plist */,
 				1EBBE4812C211BCE008E02BD /* kkusu.entitlements */,
+				1EBBE4912C212B3C008E02BD /* Model */,
 				1EBBE4472C211A1E008E02BD /* kkusuApp.swift */,
 				1EBBE4492C211A1E008E02BD /* ContentView.swift */,
 				1EBBE4A22C21B813008E02BD /* MainView.swift */,
@@ -182,6 +187,7 @@
 		1EBBE45A2C211ACC008E02BD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1EBBE4A82C22BAF0008E02BD /* CallKit.framework */,
 				1EBBE45B2C211ACC008E02BD /* Intents.framework */,
 				1EBBE4662C211ACC008E02BD /* IntentsUI.framework */,
 			);
@@ -243,8 +249,9 @@
 			isa = PBXGroup;
 			children = (
 				1EBBE48F2C212176008E02BD /* music.m4a */,
-				1EBBE4992C216F81008E02BD /* mainBackground.gif */,
-				1EBBE49B2C216F88008E02BD /* checkBackground.gif */,
+				1EBBE4AA2C22FEAF008E02BD /* momSound.m4a */,
+				1EBBE4A42C22B7FB008E02BD /* checkBackground.gif */,
+				1EBBE4A62C22B816008E02BD /* mainBackground.gif */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -368,11 +375,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EBBE4AB2C22FF8D008E02BD /* momSound.m4a in Resources */,
 				1EBBE44F2C211A20008E02BD /* Preview Assets.xcassets in Resources */,
 				1EBBE44C2C211A20008E02BD /* Assets.xcassets in Resources */,
-				1EBBE49C2C216F88008E02BD /* checkBackground.gif in Resources */,
+				1EBBE4A52C22B7FB008E02BD /* checkBackground.gif in Resources */,
 				1EBBE4902C212176008E02BD /* music.m4a in Resources */,
-				1EBBE49A2C216F81008E02BD /* mainBackground.gif in Resources */,
+				1EBBE4A72C22B816008E02BD /* mainBackground.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,6 +599,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = kkusu/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ExitCall;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -625,6 +634,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = kkusu/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ExitCall;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -13,14 +13,12 @@ class FakeCallSetting {
     @Attribute var delayTime: Int
     @Attribute var reAlret: Bool
     @Attribute var caller: String
-    @Attribute var trigger: String
     
 
 
-    init(delayTime: Int, reAlret: Bool, caller: String, trigger: String) {
+    init(delayTime: Int, reAlret: Bool, caller: String) {
         self.delayTime = delayTime
         self.reAlret = reAlret
         self.caller = caller
-        self.trigger = trigger
     }
 }

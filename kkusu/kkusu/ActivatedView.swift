@@ -7,12 +7,14 @@
 
 import SwiftUI
 import SwiftData
+import Intents
 
 struct ActivatedView: View {
     @Environment(\.modelContext) var modelContext
     @Query var fakeCallSet: [FakeCallSetting]
-    private var callProviderDelegate = FakeCallProviderDelegate()
-    
+    var callProviderDelegate : FakeCallProviderDelegate
+    @State var shortcut: INShortcut? = nil
+
     var body: some View {
         ZStack{
             GifView("checkBackground")
@@ -20,9 +22,10 @@ struct ActivatedView: View {
             VStack{
                 Text("말해보세요")
                     .font(.system(size: 16))
+                    .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
                     .foregroundStyle(.white)
-                    .padding(.top, 424)
-                Text("\(fakeCallSet.first?.trigger ?? "값이 설정되어 있지 않아요")")
+                    .padding(.top, 409)
+                Text("\(shortcut?.userActivity?.suggestedInvocationPhrase ?? "값이 설정되어 있지 않아요")")
                     .font(.system(size: 20, weight: .bold))
                     .foregroundStyle(.white)
                     .padding(.top, 1)
@@ -61,9 +64,21 @@ struct ActivatedView: View {
                 .padding(.horizontal, 39)
             }
         }
+        .onAppear{
+            fetchShortcut()
+        }
+    }
+    
+    func fetchShortcut() {
+        UserActivityShortcutsManager.getExistingVoiceShortcut(for: UserActivityShortcutsManager.Shortcut.fakeCall.type) { fetchedShortcut in
+            if let fetchedShortcut = fetchedShortcut {
+                print("찾음")
+                self.shortcut = fetchedShortcut
+            }
+        }
     }
 }
 
 #Preview {
-    ActivatedView()
+    ActivatedView(callProviderDelegate: FakeCallProviderDelegate())
 }

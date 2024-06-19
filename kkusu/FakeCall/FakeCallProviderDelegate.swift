@@ -9,24 +9,24 @@ import Foundation
 import CallKit
 import AVFoundation
 
-
-final class FakeCallProviderDelegate: NSObject, CXProviderDelegate {
+final class FakeCallProviderDelegate: NSObject, ObservableObject, CXProviderDelegate {
     var audioPlayer: AVAudioPlayer?
     let provider: CXProvider
     let callController = CXCallController()
     
     override init() {
         let configuration = CXProviderConfiguration()
-        configuration.supportedHandleTypes = [.phoneNumber]
+        configuration.supportsVideo = true
+        configuration.maximumCallsPerCallGroup = 1
+        configuration.supportedHandleTypes = [.generic]
         self.provider = CXProvider(configuration: configuration)
         super.init()
         provider.setDelegate(self, queue: nil)
     }
     
     public func startCall(id: UUID, handle: String) {
-        let uuid = UUID()
-        let handle = CXHandle(type: .phoneNumber, value: handle)
-        let startCallAction = CXStartCallAction(call: uuid, handle: handle)
+        let handle = CXHandle(type: .generic, value: handle)
+        let startCallAction = CXStartCallAction(call: id, handle: handle)
         let transaction = CXTransaction(action: startCallAction)
         
         callController.request(transaction) { error in
@@ -54,20 +54,22 @@ final class FakeCallProviderDelegate: NSObject, CXProviderDelegate {
     
     func providerDidReset(_ provider: CXProvider) {
         print("Call reset")
+        cleanupAfterCall()
     }
     
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
         print("Answering call")
-        configureAudioSession()
-        playRecordedAudio()
-
+        self.configureAudioSession()
         action.fulfill()
     }
     
+    func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
+        self.playRecordedAudio()
+    }
+    
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
-        deactivateAudioSession()
-        
         print("Ending call")
+        cleanupAfterCall()
         action.fulfill()
     }
     
@@ -79,25 +81,39 @@ final class FakeCallProviderDelegate: NSObject, CXProviderDelegate {
     private func configureAudioSession() {
         let audioSession = AVAudioSession.sharedInstance()
         do {
-            try audioSession.setCategory(.playAndRecord, mode: .voiceChat, options: [])
-            try audioSession.setMode(.voiceChat)
-            try audioSession.setActive(true, options: [])
+            if audioSession.category != .playAndRecord {
+                try audioSession.setCategory(AVAudioSession.Category.playAndRecord,
+                                             options: AVAudioSession.CategoryOptions.allowBluetooth)
+            }
+            if audioSession.mode != .voiceChat {
+                try audioSession.setMode(.voiceChat)
+            }
         } catch {
-            print("Failed to configure audio session: \(error.localizedDescription)")
+            print("Error configuring AVAudioSession: \(error.localizedDescription)")
         }
+//        let audioSession = AVAudioSession.sharedInstance()
+//        do {
+//            try audioSession.setCategory(.playAndRecord, mode: .voiceChat, options: [])
+//            try audioSession.setMode(.voiceChat)
+//            try audioSession.setActive(true, options: [])
+//            print("Audio session configured")
+//        } catch {
+//            print("Failed to configure audio session: \(error.localizedDescription)")
+//        }
     }
     
     private func deactivateAudioSession() {
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setActive(false, options: [])
+            print("Audio session deactivated")
         } catch {
             print("Failed to deactivate audio session: \(error.localizedDescription)")
         }
     }
     
     private func playRecordedAudio() {
-        guard let audioFilePath = Bundle.main.path(forResource: "music", ofType: "m4a") else {
+        guard let audioFilePath = Bundle.main.path(forResource: "momSound", ofType: "m4a") else {
             print("Audio file not found")
             return
         }
@@ -105,11 +121,11 @@ final class FakeCallProviderDelegate: NSObject, CXProviderDelegate {
         let audioURL = URL(fileURLWithPath: audioFilePath)
         
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playback)
-            try AVAudioSession.sharedInstance().setActive(true)
-            
             audioPlayer = try AVAudioPlayer(contentsOf: audioURL)
-            audioPlayer?.play()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                self.audioPlayer?.play()
+                print("Playing recorded audio")
+            }
         } catch {
             print("Failed to play audio: \(error.localizedDescription)")
         }
@@ -117,5 +133,13 @@ final class FakeCallProviderDelegate: NSObject, CXProviderDelegate {
 
     private func stopAudioPlayback() {
         audioPlayer?.stop()
+        print("Audio playback stopped")
+    }
+    
+    private func cleanupAfterCall() {
+        stopAudioPlayback()
+        deactivateAudioSession()
+        audioPlayer = nil
+        print("Cleaned up after call")
     }
 }

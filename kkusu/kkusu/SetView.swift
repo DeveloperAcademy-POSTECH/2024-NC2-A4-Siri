@@ -12,18 +12,17 @@ import Intents
 struct SetView: View {
     @Environment(\.modelContext) var modelContext
     @Query var fakeCallSet: [FakeCallSetting]
-    let shortcut: INShortcut = UserActivityShortcutsManager.Shortcut.fakeCall.makeShortcut()
-    
+    @State var shortcut: INShortcut?
+
+//    @State var shortcut: INShortcut = UserActivityShortcutsManager.Shortcut.fakeCall.makeShortcut()
+//    
     @Binding var showModal: Bool
     @State private var selectedTime = 5
     @State private var remindMe = false
     @State private var selectedCaller = "엄마"
-    @State private var selectedTrigger = "안녕하세요"
     
     let timeOptions = [5, 10, 15, 30, 60]
     let callerOptions = ["엄마", "아빠", "오빠", "누나", "꾸기", "이수"]
-    let triggerOptions = ["안녕하세요", "도와주세요", "무슨 일이에요?"]
-
 
     var body: some View {
         ZStack {
@@ -66,12 +65,11 @@ struct SetView: View {
             }
             .padding(.top, 40)
 
-//            SiriButton(shortcut: shortcut).frame(height: 34)
-
         }
         .ignoresSafeArea(.all)
         .onAppear(perform: {
             setState()
+            initializeShortcut()
         })
     }
     
@@ -86,9 +84,6 @@ struct SetView: View {
         .pickerStyle(MenuPickerStyle())
         .listRowBackground(Color.black)
         .listRowSeparatorTint(.gray)
-        .onChange(of: selectedTime) {
-            print("Selected time: 분")
-        }
     }
     
     //MARK: - 다시 알림 토글
@@ -98,9 +93,6 @@ struct SetView: View {
         }
         .listRowBackground(Color.black)
         .listRowSeparatorTint(.gray)
-        .onChange(of: remindMe) {
-            
-        }
     }
     
     //MARK: - 발신자 픽커
@@ -117,12 +109,14 @@ struct SetView: View {
     
     //MARK: - 트리거 문장 픽커
     var TriggerPicker : some View{
-        Picker("트리거 문장", selection: $selectedTrigger) {
-            ForEach(triggerOptions, id: \.self) { trigger in
-                Text(trigger).tag(trigger)
-            }
+
+        HStack{
+            Text("단축어 설정")
+            Spacer()
+            SiriButton(shortcut: $shortcut)
+                .frame(width: 120, height: 60)
+                .padding(.trailing, 20)
         }
-        .pickerStyle(MenuPickerStyle())
         .listRowBackground(Color.black)
         .listRowSeparatorTint(.gray)
     }
@@ -130,16 +124,18 @@ struct SetView: View {
     //MARK: - swiftData model 값 설정 함수
     func changeFakeCallSet() {
         if fakeCallSet.isEmpty{
-            let newFakeCallSetting = FakeCallSetting(delayTime: selectedTime, reAlret: remindMe, caller: selectedCaller, trigger: selectedTrigger)
+            print("빈공간 저장할거임 \(shortcut?.userActivity?.suggestedInvocationPhrase ?? "알수없음")")
+
+            let newFakeCallSetting = FakeCallSetting(delayTime: selectedTime, reAlret: remindMe, caller: selectedCaller)
 
             modelContext.insert(newFakeCallSetting)
         } else {
-            
+            print("원래 공간 저장할거임 \(shortcut?.userActivity?.suggestedInvocationPhrase ?? "알수없음")")
+
             guard let firstItem = fakeCallSet.first else { return }
             firstItem.delayTime = selectedTime
             firstItem.reAlret = remindMe
             firstItem.caller = selectedCaller
-            firstItem.trigger = selectedTrigger
             
             do {
                 try modelContext.save()
@@ -153,7 +149,18 @@ struct SetView: View {
         selectedCaller = fakeCallSet.first?.caller ?? callerOptions.first!
         selectedTime = fakeCallSet.first?.delayTime ?? timeOptions.first!
         remindMe = fakeCallSet.first?.reAlret ?? false
-        selectedTrigger = fakeCallSet.first?.trigger ?? triggerOptions.first!
+    }
+    
+    func initializeShortcut() {
+        UserActivityShortcutsManager.getExistingVoiceShortcut(for: UserActivityShortcutsManager.Shortcut.fakeCall.type) { fetchedShortcut in
+            if let fetchedShortcut = fetchedShortcut {
+                print("찾음")
+                self.shortcut = fetchedShortcut
+            } else {
+                print("만듦")
+                self.shortcut = UserActivityShortcutsManager.Shortcut.fakeCall.makeShortcut()
+            }
+        }
     }
 }
 
