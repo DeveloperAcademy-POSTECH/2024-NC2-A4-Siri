@@ -1,7 +1,6 @@
 # 2024-NC2-A4-Siri
 꾸기 &amp; 이수
-![Uploading image.png…]()
-
+![NC2_Main](https://github.com/DeveloperAcademy-POSTECH/2024-NC2-A4-Siri/assets/91677242/df4f1a0a-7443-4fb0-92ed-2f4de7e11f2c)
 ## 🎥 Youtube Link
 (추후 만들어진 유튜브 링크 추가)
 
