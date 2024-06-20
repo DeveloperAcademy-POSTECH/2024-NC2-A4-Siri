@@ -1,0 +1,2 @@
+kkusu/Resource/checkBackground.gif filter=lfs diff=lfs merge=lfs -text
+kkusu/Resource/mainBackground.gif filter=lfs diff=lfs merge=lfs -text
