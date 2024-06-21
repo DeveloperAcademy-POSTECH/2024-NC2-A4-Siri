@@ -27,4 +27,60 @@
 ![NC2 집중기술2 002](https://github.com/DeveloperAcademy-POSTECH/2024-NC2-A4-Siri/assets/91677242/3c8fd12f-a315-40ba-bfa7-cf0878778732)
 
 ## 🛠️ About Code
-(핵심 코드에 대한 설명 추가)
+```swift
+    private func setupButton() {
+        let button = INUIAddVoiceShortcutButton(style: .automaticOutline)
+        button.shortcut = shortcut
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.delegate = self
+        
+        self.view.addSubview(button)
+        NSLayoutConstraint.activate([
+            button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            button.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        self.button = button
+    }
+```
+```swift
+ extension SiriUIViewController: INUIAddVoiceShortcutButtonDelegate {
+     func present(_ addVoiceShortcutViewController: INUIAddVoiceShortcutViewController, for addVoiceShortcutButton: INUIAddVoiceShortcutButton) {
+         addVoiceShortcutViewController.delegate = self
+         addVoiceShortcutViewController.modalPresentationStyle = .formSheet
+         present(addVoiceShortcutViewController, animated: true)
+     }
+     
+     func present(_ editVoiceShortcutViewController: INUIEditVoiceShortcutViewController, for addVoiceShortcutButton: INUIAddVoiceShortcutButton) {
+         editVoiceShortcutViewController.delegate = self
+         editVoiceShortcutViewController.modalPresentationStyle = .formSheet
+         present(editVoiceShortcutViewController, animated: true)
+     }
+ }
+```
+```swift
+ extension SiriUIViewController: INUIAddVoiceShortcutViewControllerDelegate {
+     func addVoiceShortcutViewController(_ controller: INUIAddVoiceShortcutViewController, didFinishWith voiceShortcut: INVoiceShortcut?, error: Error?) {
+         if let voiceShortcut = voiceShortcut {
+             let newShortcut = INShortcut(userActivity: voiceShortcut.shortcut.userActivity!)
+             newShortcut.userActivity?.suggestedInvocationPhrase = voiceShortcut.invocationPhrase
+             updateShortcut(shortcut: newShortcut)
+         }
+         controller.dismiss(animated: true)
+     }
+ 
+     func addVoiceShortcutViewControllerDidCancel(_ controller: INUIAddVoiceShortcutViewController) {
+         controller.dismiss(animated: true)
+     }
+ }
+```
+```swift
+    func updateShortcut(shortcut: INShortcut?) {
+        if let shortcut = shortcut {
+            self.shortcut?.userActivity?.suggestedInvocationPhrase = shortcut.userActivity?.suggestedInvocationPhrase
+            self.shortcut = shortcut
+            self.button?.shortcut = shortcut
+            
+            INVoiceShortcutCenter.shared.setShortcutSuggestions([shortcut])
+        }
+    }
+```
