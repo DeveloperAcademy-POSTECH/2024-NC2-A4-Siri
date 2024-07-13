@@ -11,8 +11,9 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) var modelContext
     @Query var fakeCallSet: [FakeCallSetting]
-    var callProviderDelegate = FakeCallProviderDelegate()
+    @StateObject var callProviderDelegate = FakeCallProviderDelegate()
     @State var isWait = false
+    @State private var isShortcutHandled = false
 
     var body: some View {
         if fakeCallSet.isEmpty{
@@ -21,22 +22,34 @@ struct ContentView: View {
             ActivatedView(callProviderDelegate : callProviderDelegate, isWait: $isWait)
                 .onContinueUserActivity(UserActivityShortcutsManager.Shortcut.fakeCall.type, perform: { userActivity in
                     
+                    guard !isShortcutHandled else { return }
+                    isShortcutHandled = true
+                    
                     isWait = true
                     if let firstFakeCall = fakeCallSet.first {
                         let initialDelay = Double(firstFakeCall.delayTime)
                         let reAlertDelay = initialDelay + 120
 
                         DispatchQueue.main.asyncAfter(deadline: .now() + initialDelay) {
+                            print("alert")
                             triggerFakeCall(callProviderDelegate: callProviderDelegate, caller: firstFakeCall.caller)
                         }
 
                         if firstFakeCall.reAlret {
+                            print("reAlert")
                             DispatchQueue.main.asyncAfter(deadline: .now() + reAlertDelay) {
                                 triggerFakeCall(callProviderDelegate: callProviderDelegate, caller: firstFakeCall.caller)
                             }
                         }
                     }
                 })
+                .onChange(of: callProviderDelegate.isCallEnded) { oldValue, newValue in
+                    if newValue {
+                        print("wait 상태 변함")
+                        isWait = false
+                    }
+                }
+                
         }
     }
 }
