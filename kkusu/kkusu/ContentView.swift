@@ -12,13 +12,16 @@ struct ContentView: View {
     @Environment(\.modelContext) var modelContext
     @Query var fakeCallSet: [FakeCallSetting]
     var callProviderDelegate = FakeCallProviderDelegate()
+    @State var isWait = false
 
     var body: some View {
         if fakeCallSet.isEmpty{
             MainView()
         } else {
-            ActivatedView(callProviderDelegate : callProviderDelegate)
+            ActivatedView(callProviderDelegate : callProviderDelegate, isWait: $isWait)
                 .onContinueUserActivity(UserActivityShortcutsManager.Shortcut.fakeCall.type, perform: { userActivity in
+                    
+                    isWait = true
                     if let firstFakeCall = fakeCallSet.first {
                         let initialDelay = Double(firstFakeCall.delayTime)
                         let reAlertDelay = initialDelay + 120
