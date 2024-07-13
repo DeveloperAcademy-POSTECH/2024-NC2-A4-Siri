@@ -17,7 +17,7 @@ final class FakeCallProviderDelegate: NSObject, ObservableObject, CXProviderDele
     
     override init() {
         let configuration = CXProviderConfiguration()
-        configuration.supportsVideo = true
+        configuration.supportsVideo = false
         configuration.maximumCallsPerCallGroup = 1
         configuration.supportedHandleTypes = [.generic]
         self.provider = CXProvider(configuration: configuration)
@@ -42,7 +42,7 @@ final class FakeCallProviderDelegate: NSObject, ObservableObject, CXProviderDele
     public func reportIncomingCall(uuid: UUID, handle: String, hasVideo: Bool = false) {
         let update = CXCallUpdate()
         update.remoteHandle = CXHandle(type: .generic, value: handle)
-        update.hasVideo = true
+        update.hasVideo = false
         
         provider.reportNewIncomingCall(with: uuid, update: update) { error in
             if let error = error {
@@ -61,8 +61,8 @@ final class FakeCallProviderDelegate: NSObject, ObservableObject, CXProviderDele
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
         print("Answering call")
         self.configureAudioSession()
-        action.fulfill()
         isCallEnded = false
+        action.fulfill()
     }
     
     func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
@@ -72,8 +72,8 @@ final class FakeCallProviderDelegate: NSObject, ObservableObject, CXProviderDele
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
         print("Ending call")
         cleanupAfterCall()
-        action.fulfill()
         isCallEnded = true
+        action.fulfill()
     }
     
     func provider(_ provider: CXProvider, perform action: CXSetHeldCallAction) {
