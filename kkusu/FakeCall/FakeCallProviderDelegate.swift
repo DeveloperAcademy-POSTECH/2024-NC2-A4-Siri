@@ -10,13 +10,14 @@ import CallKit
 import AVFoundation
 
 final class FakeCallProviderDelegate: NSObject, ObservableObject, CXProviderDelegate {
+    @Published var isCallEnded = false
     var audioPlayer: AVAudioPlayer?
     let provider: CXProvider
     let callController = CXCallController()
     
     override init() {
         let configuration = CXProviderConfiguration()
-        configuration.supportsVideo = true
+        configuration.supportsVideo = false
         configuration.maximumCallsPerCallGroup = 1
         configuration.supportedHandleTypes = [.generic]
         self.provider = CXProvider(configuration: configuration)
@@ -41,7 +42,7 @@ final class FakeCallProviderDelegate: NSObject, ObservableObject, CXProviderDele
     public func reportIncomingCall(uuid: UUID, handle: String, hasVideo: Bool = false) {
         let update = CXCallUpdate()
         update.remoteHandle = CXHandle(type: .generic, value: handle)
-        update.hasVideo = hasVideo
+        update.hasVideo = false
         
         provider.reportNewIncomingCall(with: uuid, update: update) { error in
             if let error = error {
@@ -60,6 +61,7 @@ final class FakeCallProviderDelegate: NSObject, ObservableObject, CXProviderDele
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
         print("Answering call")
         self.configureAudioSession()
+        isCallEnded = false
         action.fulfill()
     }
     
@@ -70,6 +72,7 @@ final class FakeCallProviderDelegate: NSObject, ObservableObject, CXProviderDele
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
         print("Ending call")
         cleanupAfterCall()
+        isCallEnded = true
         action.fulfill()
     }
     
@@ -91,15 +94,6 @@ final class FakeCallProviderDelegate: NSObject, ObservableObject, CXProviderDele
         } catch {
             print("Error configuring AVAudioSession: \(error.localizedDescription)")
         }
-//        let audioSession = AVAudioSession.sharedInstance()
-//        do {
-//            try audioSession.setCategory(.playAndRecord, mode: .voiceChat, options: [])
-//            try audioSession.setMode(.voiceChat)
-//            try audioSession.setActive(true, options: [])
-//            print("Audio session configured")
-//        } catch {
-//            print("Failed to configure audio session: \(error.localizedDescription)")
-//        }
     }
     
     private func deactivateAudioSession() {

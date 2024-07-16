@@ -14,8 +14,26 @@ struct ActivatedView: View {
     @Query var fakeCallSet: [FakeCallSetting]
     var callProviderDelegate : FakeCallProviderDelegate
     @State var shortcut: INShortcut? = nil
+    @Binding var isWait: Bool
 
     var body: some View {
+        if !isWait{
+            CheckView
+        } else{
+            WaitView
+        }
+    }
+    
+    func fetchShortcut() {
+        UserActivityShortcutsManager.getExistingVoiceShortcut(for: UserActivityShortcutsManager.Shortcut.fakeCall.type) { fetchedShortcut in
+            if let fetchedShortcut = fetchedShortcut {
+                print("찾음")
+                self.shortcut = fetchedShortcut
+            }
+        }
+    }
+    
+    var CheckView: some View {
         ZStack{
             GifView("checkBackground")
                 .frame(height: 990)
@@ -69,16 +87,18 @@ struct ActivatedView: View {
         }
     }
     
-    func fetchShortcut() {
-        UserActivityShortcutsManager.getExistingVoiceShortcut(for: UserActivityShortcutsManager.Shortcut.fakeCall.type) { fetchedShortcut in
-            if let fetchedShortcut = fetchedShortcut {
-                print("찾음")
-                self.shortcut = fetchedShortcut
+    var WaitView: some View{
+        VStack{
+            HStack{
+                Spacer()
             }
+            Spacer()
         }
+        .background(ignoresSafeAreaEdges: .all)
+        .background(.black)
     }
 }
-
-#Preview {
-    ActivatedView(callProviderDelegate: FakeCallProviderDelegate())
-}
+//
+//#Preview {
+//    ActivatedView(callProviderDelegate: FakeCallProviderDelegate())
+//}

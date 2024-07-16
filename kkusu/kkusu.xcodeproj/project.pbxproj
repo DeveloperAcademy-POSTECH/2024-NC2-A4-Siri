@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E2B14622C425CC0007796CC /* momSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1E2B14612C425CAE007796CC /* momSound.m4a */; };
 		1EBBE4482C211A1E008E02BD /* kkusuApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBBE4472C211A1E008E02BD /* kkusuApp.swift */; };
 		1EBBE44A2C211A1E008E02BD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBBE4492C211A1E008E02BD /* ContentView.swift */; };
 		1EBBE44C2C211A20008E02BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EBBE44B2C211A20008E02BD /* Assets.xcassets */; };
@@ -34,7 +35,6 @@
 		1EBBE4A52C22B7FB008E02BD /* checkBackground.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1EBBE4A42C22B7FB008E02BD /* checkBackground.gif */; };
 		1EBBE4A72C22B816008E02BD /* mainBackground.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1EBBE4A62C22B816008E02BD /* mainBackground.gif */; };
 		1EBBE4A92C22BAF0008E02BD /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EBBE4A82C22BAF0008E02BD /* CallKit.framework */; };
-		1EBBE4AB2C22FF8D008E02BD /* momSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1EBBE4AA2C22FEAF008E02BD /* momSound.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +70,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1E2B14612C425CAE007796CC /* momSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = momSound.m4a; sourceTree = "<group>"; };
 		1EBBE4442C211A1E008E02BD /* kkusu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kkusu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EBBE4472C211A1E008E02BD /* kkusuApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kkusuApp.swift; sourceTree = "<group>"; };
 		1EBBE4492C211A1E008E02BD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -100,7 +101,6 @@
 		1EBBE4A42C22B7FB008E02BD /* checkBackground.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = checkBackground.gif; sourceTree = "<group>"; };
 		1EBBE4A62C22B816008E02BD /* mainBackground.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = mainBackground.gif; sourceTree = "<group>"; };
 		1EBBE4A82C22BAF0008E02BD /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
-		1EBBE4AA2C22FEAF008E02BD /* momSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = momSound.m4a; path = ../../../../Downloads/momSound.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,7 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				1EBBE48F2C212176008E02BD /* music.m4a */,
-				1EBBE4AA2C22FEAF008E02BD /* momSound.m4a */,
+				1E2B14612C425CAE007796CC /* momSound.m4a */,
 				1EBBE4A42C22B7FB008E02BD /* checkBackground.gif */,
 				1EBBE4A62C22B816008E02BD /* mainBackground.gif */,
 			);
@@ -375,7 +375,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EBBE4AB2C22FF8D008E02BD /* momSound.m4a in Resources */,
+				1E2B14622C425CC0007796CC /* momSound.m4a in Resources */,
 				1EBBE44F2C211A20008E02BD /* Preview Assets.xcassets in Resources */,
 				1EBBE44C2C211A20008E02BD /* Assets.xcassets in Resources */,
 				1EBBE4A52C22B7FB008E02BD /* checkBackground.gif in Resources */,
